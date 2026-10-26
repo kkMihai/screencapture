@@ -14,6 +14,7 @@ import { UploadStore } from './upload-store';
 import { processUpload } from './process-upload';
 import { captureUploadMetric, getUploadMetricHttpStatus } from './metrics';
 import { createUploadHeaders, formatUploadErrorMessage, getUploadHost } from './upload-identity-headers';
+import { getUploadAgent } from './upload-agent';
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -229,6 +230,7 @@ async function uploadStreamFile(streamData: StreamUploadData, buf: Buffer): Prom
 
   try {
     const response = await fetch(url, {
+      agent: getUploadAgent(),
       method: 'POST',
       headers: {
         ...formData.getHeaders(),
